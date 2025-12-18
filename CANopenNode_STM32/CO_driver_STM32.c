@@ -581,28 +581,17 @@ prv_read_can_received_msg(CAN_HandleTypeDef* hcan, uint32_t fifo, uint32_t fifo_
 
 #ifdef CO_STM32_FDCAN_Driver
 /**
- * \brief           Rx FIFO 0 callback.
+ * \brief           Rx callback.
+ * \param[in]       fifo: FDCAN_RX_FIFO0 or FDCAN_RX_FIFO1 depending on which interrupt
+ *                      was fired
  * \param[in]       hfdcan: pointer to an FDCAN_HandleTypeDef structure that contains
  *                      the configuration information for the specified FDCAN.
- * \param[in]       RxFifo0ITs: indicates which Rx FIFO 0 interrupts are signaled.
+ * \param[in]       RxFifoITs: indicates which Rx FIFO interrupts are signaled.
  */
-void
-HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo0ITs) {
-    if (RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) {
-        prv_read_can_received_msg(hfdcan, FDCAN_RX_FIFO0, RxFifo0ITs);
-    }
-}
-
-/**
- * \brief           Rx FIFO 1 callback.
- * \param[in]       hfdcan: pointer to an FDCAN_HandleTypeDef structure that contains
- *                      the configuration information for the specified FDCAN.
- * \param[in]       RxFifo1ITs: indicates which Rx FIFO 0 interrupts are signaled.
- */
-void
-HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo1ITs) {
-    if (RxFifo1ITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE) {
-        prv_read_can_received_msg(hfdcan, FDCAN_RX_FIFO1, RxFifo1ITs);
+void canopen_app_can_rx_interrupt(uint32_t fifo, FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifoITs) {
+    if (((fifo == FDCAN_RX_FIFO0) && (RxFifoITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE)) ||
+        ((fifo == FDCAN_RX_FIFO1) && (RxFifoITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE))) {
+        prv_read_can_received_msg(hfdcan, fifo, RxFifoITs);
     }
 }
 
@@ -613,7 +602,7 @@ HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifo1ITs) {
  * \param[in]       BufferIndexes: Bits of successfully sent TX buffers
  */
 void
-HAL_FDCAN_TxBufferCompleteCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t BufferIndexes) {
+canopen_app_can_tx_interrupt(FDCAN_HandleTypeDef* hfdcan, uint32_t BufferIndexes) {
     CANModule_local->firstCANtxMessage = false;            /* First CAN message (bootup) was sent successfully */
     CANModule_local->bufferInhibitFlag = false;            /* Clear flag from previous message */
     if (CANModule_local->CANtxCount > 0U) {                /* Are there any new messages waiting to be send */
@@ -646,23 +635,15 @@ HAL_FDCAN_TxBufferCompleteCallback(FDCAN_HandleTypeDef* hfdcan, uint32_t BufferI
 }
 #else
 /**
- * \brief           Rx FIFO 0 callback.
+ * \brief           Rx callback.
+ * \param[in]       fifo: CAN_RX_FIFO0 or CAN_RX_FIFO1 depending on which interrupt
+ *                      was fired
  * \param[in]       hcan: pointer to an CAN_HandleTypeDef structure that contains
  *                      the configuration information for the specified CAN.
  */
-void
-HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
-    prv_read_can_received_msg(hcan, CAN_RX_FIFO0, 0);
-}
-
-/**
- * \brief           Rx FIFO 1 callback.
- * \param[in]       hcan: pointer to an CAN_HandleTypeDef structure that contains
- *                      the configuration information for the specified CAN.
- */
-void
-HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef* hcan) {
-    prv_read_can_received_msg(hcan, CAN_RX_FIFO1, 0);
+void canopen_app_can_rx_interrupt(uint32_t fifo, CAN_HandleTypeDef* hcan)
+{
+    prv_read_can_received_msg(hcan, fifo, 0);
 }
 
 /**
@@ -705,18 +686,9 @@ CO_CANinterrupt_TX(CO_CANmodule_t* CANmodule, uint32_t MailboxNumber) {
     }
 }
 
-void
-HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef* hcan) {
-    CO_CANinterrupt_TX(CANModule_local, CAN_TX_MAILBOX0);
+void canopen_app_can_tx_interrupt(uint32_t mailbox, CO_CAN_HANDLE_TYPE hcan __attribute__ ((unused)))
+{
+    CO_CANinterrupt_TX(CANModule_local, mailbox);
 }
 
-void
-HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef* hcan) {
-    CO_CANinterrupt_TX(CANModule_local, CAN_TX_MAILBOX0);
-}
-
-void
-HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef* hcan) {
-    CO_CANinterrupt_TX(CANModule_local, CAN_TX_MAILBOX0);
-}
 #endif

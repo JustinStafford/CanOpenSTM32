@@ -67,6 +67,18 @@ void canopen_app_process();
 /* Thread function executes in constant intervals, this function can be called from FreeRTOS tasks or Timers ********/
 void canopen_app_interrupt(void);
 
+#ifdef CO_STM32_FDCAN_Driver
+/* To be called from HAL_FDCAN_RxFifo0Callback and HAL_FDCAN_RxFifo1Callback or equivalent. */
+void canopen_app_can_rx_interrupt(uint32_t fifo, FDCAN_HandleTypeDef* hfdcan, uint32_t RxFifoITs);
+/* To be called from HAL_FDCAN_TxBufferCompleteCallback or equivalent. */
+void canopen_app_can_tx_interrupt(FDCAN_HandleTypeDef* hfdcan, uint32_t BufferIndexes);
+#else
+/* To be called from HAL_CAN_RxFifo0MsgPendingCallback and HAL_CAN_RxFifo1MsgPendingCallback or equivalent. */
+void canopen_app_can_rx_interrupt(uint32_t fifo, CAN_HandleTypeDef* hcan);
+/* To be called from HAL_CAN_TxMailbox0CompleteCallback etc. or equivalent. */
+void canopen_app_can_tx_interrupt(uint32_t mailbox, CO_CAN_HANDLE_TYPE hcan);
+#endif
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
