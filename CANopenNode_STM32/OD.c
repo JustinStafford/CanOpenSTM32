@@ -105,9 +105,9 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .applicationObject_8 = 0x00000000
     },
     .x1601_RPDOMappingParameter = {
-        .numberOfMappedApplicationObjectsInPDO = 0x01,
+        .numberOfMappedApplicationObjectsInPDO = 0x02,
         .applicationObject_1 = 0x21040020,
-        .applicationObject_2 = 0x00000000,
+        .applicationObject_2 = 0x21050010,
         .applicationObject_3 = 0x00000000,
         .applicationObject_4 = 0x00000000,
         .applicationObject_5 = 0x00000000,
@@ -332,6 +332,7 @@ OD_ATTR_RAM OD_RAM_t OD_RAM = {
     .x2102_erobStatusWord = 0x0000,
     .x2103_erobActualPosition = 0,
     .x2104_erobActualVelocity = 0,
+    .x2105_erobActualCurrent = 0,
     .x2200_wheelFrontLeftControlWord = 0x0000,
     .x2201_wheelFrontLeftTargetVelocity = 0,
     .x2202_wheelFrontRightControlWord = 0x0000,
@@ -416,6 +417,7 @@ typedef struct {
     OD_obj_var_t o_2102_erobStatusWord;
     OD_obj_var_t o_2103_erobActualPosition;
     OD_obj_var_t o_2104_erobActualVelocity;
+    OD_obj_var_t o_2105_erobActualCurrent;
     OD_obj_var_t o_2200_wheelFrontLeftControlWord;
     OD_obj_var_t o_2201_wheelFrontLeftTargetVelocity;
     OD_obj_var_t o_2202_wheelFrontRightControlWord;
@@ -1942,6 +1944,11 @@ static CO_PROGMEM ODObjs_t ODObjs = {
         .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
         .dataLength = 4
     },
+    .o_2105_erobActualCurrent = {
+        .dataOrig = &OD_RAM.x2105_erobActualCurrent,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
     .o_2200_wheelFrontLeftControlWord = {
         .dataOrig = &OD_RAM.x2200_wheelFrontLeftControlWord,
         .attribute = ODA_SDO_RW | ODA_TPDO | ODA_MB,
@@ -2121,6 +2128,7 @@ static OD_ATTR_OD OD_entry_t ODList[] = {
     {0x2102, 0x01, ODT_VAR, &ODObjs.o_2102_erobStatusWord, NULL},
     {0x2103, 0x01, ODT_VAR, &ODObjs.o_2103_erobActualPosition, NULL},
     {0x2104, 0x01, ODT_VAR, &ODObjs.o_2104_erobActualVelocity, NULL},
+    {0x2105, 0x01, ODT_VAR, &ODObjs.o_2105_erobActualCurrent, NULL},
     {0x2200, 0x01, ODT_VAR, &ODObjs.o_2200_wheelFrontLeftControlWord, NULL},
     {0x2201, 0x01, ODT_VAR, &ODObjs.o_2201_wheelFrontLeftTargetVelocity, NULL},
     {0x2202, 0x01, ODT_VAR, &ODObjs.o_2202_wheelFrontRightControlWord, NULL},
