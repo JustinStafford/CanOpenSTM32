@@ -249,9 +249,9 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .applicationObject_8 = 0x00000000
     },
     .x1A01_TPDOMappingParameter = {
-        .numberOfMappedApplicationObjectsInPDO = 0x02,
+        .numberOfMappedApplicationObjectsInPDO = 0x01,
         .applicationObject_1 = 0x22000010,
-        .applicationObject_2 = 0x22010020,
+        .applicationObject_2 = 0x00000000,
         .applicationObject_3 = 0x00000000,
         .applicationObject_4 = 0x00000000,
         .applicationObject_5 = 0x00000000,
@@ -261,7 +261,7 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
     },
     .x1A02_TPDOMappingParameter = {
         .numberOfMappedApplicationObjectsInPDO = 0x02,
-        .applicationObject_1 = 0x22020010,
+        .applicationObject_1 = 0x22010020,
         .applicationObject_2 = 0x22030020,
         .applicationObject_3 = 0x00000000,
         .applicationObject_4 = 0x00000000,
@@ -271,9 +271,9 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .applicationObject_8 = 0x00000000
     },
     .x1A03_TPDOMappingParameter = {
-        .numberOfMappedApplicationObjectsInPDO = 0x02,
+        .numberOfMappedApplicationObjectsInPDO = 0x01,
         .applicationObject_1 = 0x22040010,
-        .applicationObject_2 = 0x22050020,
+        .applicationObject_2 = 0x00000000,
         .applicationObject_3 = 0x00000000,
         .applicationObject_4 = 0x00000000,
         .applicationObject_5 = 0x00000000,
@@ -283,7 +283,7 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
     },
     .x1A04_TPDOMappingParameter = {
         .numberOfMappedApplicationObjectsInPDO = 0x02,
-        .applicationObject_1 = 0x22060010,
+        .applicationObject_1 = 0x22050020,
         .applicationObject_2 = 0x22070020,
         .applicationObject_3 = 0x00000000,
         .applicationObject_4 = 0x00000000,
