@@ -93,6 +93,18 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .transmissionType = 0xFE,
         .eventTimer = 0x0000
     },
+    .x1408_RPDOCommunicationParameter = {
+        .highestSub_indexSupported = 0x05,
+        .COB_IDUsedByRPDO = 0x00000383,
+        .transmissionType = 0xFE,
+        .eventTimer = 0x0000
+    },
+    .x1409_RPDOCommunicationParameter = {
+        .highestSub_indexSupported = 0x05,
+        .COB_IDUsedByRPDO = 0x00000384,
+        .transmissionType = 0xFE,
+        .eventTimer = 0x0000
+    },
     .x1600_RPDOMappingParameter = {
         .numberOfMappedApplicationObjectsInPDO = 0x02,
         .applicationObject_1 = 0x21020010,
@@ -116,10 +128,10 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .applicationObject_8 = 0x00000000
     },
     .x1602_RPDOMappingParameter = {
-        .numberOfMappedApplicationObjectsInPDO = 0x01,
+        .numberOfMappedApplicationObjectsInPDO = 0x03,
         .applicationObject_1 = 0x22100020,
-        .applicationObject_2 = 0x00000000,
-        .applicationObject_3 = 0x00000000,
+        .applicationObject_2 = 0x22170010,
+        .applicationObject_3 = 0x22180010,
         .applicationObject_4 = 0x00000000,
         .applicationObject_5 = 0x00000000,
         .applicationObject_6 = 0x00000000,
@@ -138,10 +150,10 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .applicationObject_8 = 0x00000000
     },
     .x1604_RPDOMappingParameter = {
-        .numberOfMappedApplicationObjectsInPDO = 0x01,
+        .numberOfMappedApplicationObjectsInPDO = 0x03,
         .applicationObject_1 = 0x22130020,
-        .applicationObject_2 = 0x00000000,
-        .applicationObject_3 = 0x00000000,
+        .applicationObject_2 = 0x221C0010,
+        .applicationObject_3 = 0x221D0010,
         .applicationObject_4 = 0x00000000,
         .applicationObject_5 = 0x00000000,
         .applicationObject_6 = 0x00000000,
@@ -175,6 +187,28 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
         .applicationObject_1 = 0x23130010,
         .applicationObject_2 = 0x23140020,
         .applicationObject_3 = 0x23150010,
+        .applicationObject_4 = 0x00000000,
+        .applicationObject_5 = 0x00000000,
+        .applicationObject_6 = 0x00000000,
+        .applicationObject_7 = 0x00000000,
+        .applicationObject_8 = 0x00000000
+    },
+    .x1608_RPDOMappingParameter = {
+        .numberOfMappedApplicationObjectsInPDO = 0x03,
+        .applicationObject_1 = 0x22190010,
+        .applicationObject_2 = 0x221A0010,
+        .applicationObject_3 = 0x22160010,
+        .applicationObject_4 = 0x00000000,
+        .applicationObject_5 = 0x00000000,
+        .applicationObject_6 = 0x00000000,
+        .applicationObject_7 = 0x00000000,
+        .applicationObject_8 = 0x00000000
+    },
+    .x1609_RPDOMappingParameter = {
+        .numberOfMappedApplicationObjectsInPDO = 0x03,
+        .applicationObject_1 = 0x221E0010,
+        .applicationObject_2 = 0x221F0010,
+        .applicationObject_3 = 0x221B0010,
         .applicationObject_4 = 0x00000000,
         .applicationObject_5 = 0x00000000,
         .applicationObject_6 = 0x00000000,
@@ -347,6 +381,16 @@ OD_ATTR_RAM OD_RAM_t OD_RAM = {
     .x2213_wheelRearStatusWord = 0,
     .x2214_wheelRearLeftVelocity = 0,
     .x2215_wheelRearRightVelocity = 0,
+    .x2216_wheelFrontControllerTemperature = 0,
+    .x2217_wheelFrontLeftCurrent = 0,
+    .x2218_wheelFrontRightCurrent = 0,
+    .x2219_wheelFrontLeftTemperature = 0,
+    .x221A_wheelFrontRightTemperature = 0,
+    .x221B_wheelRearControllerTemperature = 0,
+    .x221C_wheelRearLeftCurrent = 0,
+    .x221D_wheelRearRightCurrent = 0,
+    .x221E_wheelRearLeftTemperature = 0,
+    .x221F_wheelRearRightTemperature = 0,
     .x2300_deckLeftControlWord = 0x0000,
     .x2301_deckLeftTargetVelocity = 0,
     .x2302_deckRightControlWord = 0x0000,
@@ -390,6 +434,8 @@ typedef struct {
     OD_obj_record_t o_1405_RPDOCommunicationParameter[4];
     OD_obj_record_t o_1406_RPDOCommunicationParameter[4];
     OD_obj_record_t o_1407_RPDOCommunicationParameter[4];
+    OD_obj_record_t o_1408_RPDOCommunicationParameter[4];
+    OD_obj_record_t o_1409_RPDOCommunicationParameter[4];
     OD_obj_record_t o_1600_RPDOMappingParameter[9];
     OD_obj_record_t o_1601_RPDOMappingParameter[9];
     OD_obj_record_t o_1602_RPDOMappingParameter[9];
@@ -398,6 +444,8 @@ typedef struct {
     OD_obj_record_t o_1605_RPDOMappingParameter[9];
     OD_obj_record_t o_1606_RPDOMappingParameter[9];
     OD_obj_record_t o_1607_RPDOMappingParameter[9];
+    OD_obj_record_t o_1608_RPDOMappingParameter[9];
+    OD_obj_record_t o_1609_RPDOMappingParameter[9];
     OD_obj_record_t o_1800_TPDOCommunicationParameter[6];
     OD_obj_record_t o_1801_TPDOCommunicationParameter[6];
     OD_obj_record_t o_1802_TPDOCommunicationParameter[6];
@@ -432,6 +480,16 @@ typedef struct {
     OD_obj_var_t o_2213_wheelRearStatusWord;
     OD_obj_var_t o_2214_wheelRearLeftVelocity;
     OD_obj_var_t o_2215_wheelRearRightVelocity;
+    OD_obj_var_t o_2216_wheelFrontControllerTemperature;
+    OD_obj_var_t o_2217_wheelFrontLeftCurrent;
+    OD_obj_var_t o_2218_wheelFrontRightCurrent;
+    OD_obj_var_t o_2219_wheelFrontLeftTemperature;
+    OD_obj_var_t o_221A_wheelFrontRightTemperature;
+    OD_obj_var_t o_221B_wheelRearControllerTemperature;
+    OD_obj_var_t o_221C_wheelRearLeftCurrent;
+    OD_obj_var_t o_221D_wheelRearRightCurrent;
+    OD_obj_var_t o_221E_wheelRearLeftTemperature;
+    OD_obj_var_t o_221F_wheelRearRightTemperature;
     OD_obj_var_t o_2300_deckLeftControlWord;
     OD_obj_var_t o_2301_deckLeftTargetVelocity;
     OD_obj_var_t o_2302_deckRightControlWord;
@@ -808,6 +866,58 @@ static CO_PROGMEM ODObjs_t ODObjs = {
         },
         {
             .dataOrig = &OD_PERSIST_COMM.x1407_RPDOCommunicationParameter.eventTimer,
+            .subIndex = 5,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 2
+        }
+    },
+    .o_1408_RPDOCommunicationParameter = {
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1408_RPDOCommunicationParameter.highestSub_indexSupported,
+            .subIndex = 0,
+            .attribute = ODA_SDO_R,
+            .dataLength = 1
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1408_RPDOCommunicationParameter.COB_IDUsedByRPDO,
+            .subIndex = 1,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1408_RPDOCommunicationParameter.transmissionType,
+            .subIndex = 2,
+            .attribute = ODA_SDO_RW,
+            .dataLength = 1
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1408_RPDOCommunicationParameter.eventTimer,
+            .subIndex = 5,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 2
+        }
+    },
+    .o_1409_RPDOCommunicationParameter = {
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1409_RPDOCommunicationParameter.highestSub_indexSupported,
+            .subIndex = 0,
+            .attribute = ODA_SDO_R,
+            .dataLength = 1
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1409_RPDOCommunicationParameter.COB_IDUsedByRPDO,
+            .subIndex = 1,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1409_RPDOCommunicationParameter.transmissionType,
+            .subIndex = 2,
+            .attribute = ODA_SDO_RW,
+            .dataLength = 1
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1409_RPDOCommunicationParameter.eventTimer,
             .subIndex = 5,
             .attribute = ODA_SDO_RW | ODA_MB,
             .dataLength = 2
@@ -1256,6 +1366,118 @@ static CO_PROGMEM ODObjs_t ODObjs = {
         },
         {
             .dataOrig = &OD_PERSIST_COMM.x1607_RPDOMappingParameter.applicationObject_8,
+            .subIndex = 8,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        }
+    },
+    .o_1608_RPDOMappingParameter = {
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.numberOfMappedApplicationObjectsInPDO,
+            .subIndex = 0,
+            .attribute = ODA_SDO_RW,
+            .dataLength = 1
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_1,
+            .subIndex = 1,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_2,
+            .subIndex = 2,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_3,
+            .subIndex = 3,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_4,
+            .subIndex = 4,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_5,
+            .subIndex = 5,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_6,
+            .subIndex = 6,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_7,
+            .subIndex = 7,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1608_RPDOMappingParameter.applicationObject_8,
+            .subIndex = 8,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        }
+    },
+    .o_1609_RPDOMappingParameter = {
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.numberOfMappedApplicationObjectsInPDO,
+            .subIndex = 0,
+            .attribute = ODA_SDO_RW,
+            .dataLength = 1
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_1,
+            .subIndex = 1,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_2,
+            .subIndex = 2,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_3,
+            .subIndex = 3,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_4,
+            .subIndex = 4,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_5,
+            .subIndex = 5,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_6,
+            .subIndex = 6,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_7,
+            .subIndex = 7,
+            .attribute = ODA_SDO_RW | ODA_MB,
+            .dataLength = 4
+        },
+        {
+            .dataOrig = &OD_PERSIST_COMM.x1609_RPDOMappingParameter.applicationObject_8,
             .subIndex = 8,
             .attribute = ODA_SDO_RW | ODA_MB,
             .dataLength = 4
@@ -2019,6 +2241,56 @@ static CO_PROGMEM ODObjs_t ODObjs = {
         .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
         .dataLength = 4
     },
+    .o_2216_wheelFrontControllerTemperature = {
+        .dataOrig = &OD_RAM.x2216_wheelFrontControllerTemperature,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_2217_wheelFrontLeftCurrent = {
+        .dataOrig = &OD_RAM.x2217_wheelFrontLeftCurrent,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_2218_wheelFrontRightCurrent = {
+        .dataOrig = &OD_RAM.x2218_wheelFrontRightCurrent,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_2219_wheelFrontLeftTemperature = {
+        .dataOrig = &OD_RAM.x2219_wheelFrontLeftTemperature,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_221A_wheelFrontRightTemperature = {
+        .dataOrig = &OD_RAM.x221A_wheelFrontRightTemperature,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_221B_wheelRearControllerTemperature = {
+        .dataOrig = &OD_RAM.x221B_wheelRearControllerTemperature,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_221C_wheelRearLeftCurrent = {
+        .dataOrig = &OD_RAM.x221C_wheelRearLeftCurrent,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_221D_wheelRearRightCurrent = {
+        .dataOrig = &OD_RAM.x221D_wheelRearRightCurrent,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_221E_wheelRearLeftTemperature = {
+        .dataOrig = &OD_RAM.x221E_wheelRearLeftTemperature,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
+    .o_221F_wheelRearRightTemperature = {
+        .dataOrig = &OD_RAM.x221F_wheelRearRightTemperature,
+        .attribute = ODA_SDO_R | ODA_RPDO | ODA_MB,
+        .dataLength = 2
+    },
     .o_2300_deckLeftControlWord = {
         .dataOrig = &OD_RAM.x2300_deckLeftControlWord,
         .attribute = ODA_SDO_RW | ODA_TPDO | ODA_MB,
@@ -2101,6 +2373,8 @@ static OD_ATTR_OD OD_entry_t ODList[] = {
     {0x1405, 0x04, ODT_REC, &ODObjs.o_1405_RPDOCommunicationParameter, NULL},
     {0x1406, 0x04, ODT_REC, &ODObjs.o_1406_RPDOCommunicationParameter, NULL},
     {0x1407, 0x04, ODT_REC, &ODObjs.o_1407_RPDOCommunicationParameter, NULL},
+    {0x1408, 0x04, ODT_REC, &ODObjs.o_1408_RPDOCommunicationParameter, NULL},
+    {0x1409, 0x04, ODT_REC, &ODObjs.o_1409_RPDOCommunicationParameter, NULL},
     {0x1600, 0x09, ODT_REC, &ODObjs.o_1600_RPDOMappingParameter, NULL},
     {0x1601, 0x09, ODT_REC, &ODObjs.o_1601_RPDOMappingParameter, NULL},
     {0x1602, 0x09, ODT_REC, &ODObjs.o_1602_RPDOMappingParameter, NULL},
@@ -2109,6 +2383,8 @@ static OD_ATTR_OD OD_entry_t ODList[] = {
     {0x1605, 0x09, ODT_REC, &ODObjs.o_1605_RPDOMappingParameter, NULL},
     {0x1606, 0x09, ODT_REC, &ODObjs.o_1606_RPDOMappingParameter, NULL},
     {0x1607, 0x09, ODT_REC, &ODObjs.o_1607_RPDOMappingParameter, NULL},
+    {0x1608, 0x09, ODT_REC, &ODObjs.o_1608_RPDOMappingParameter, NULL},
+    {0x1609, 0x09, ODT_REC, &ODObjs.o_1609_RPDOMappingParameter, NULL},
     {0x1800, 0x06, ODT_REC, &ODObjs.o_1800_TPDOCommunicationParameter, NULL},
     {0x1801, 0x06, ODT_REC, &ODObjs.o_1801_TPDOCommunicationParameter, NULL},
     {0x1802, 0x06, ODT_REC, &ODObjs.o_1802_TPDOCommunicationParameter, NULL},
@@ -2143,6 +2419,16 @@ static OD_ATTR_OD OD_entry_t ODList[] = {
     {0x2213, 0x01, ODT_VAR, &ODObjs.o_2213_wheelRearStatusWord, NULL},
     {0x2214, 0x01, ODT_VAR, &ODObjs.o_2214_wheelRearLeftVelocity, NULL},
     {0x2215, 0x01, ODT_VAR, &ODObjs.o_2215_wheelRearRightVelocity, NULL},
+    {0x2216, 0x01, ODT_VAR, &ODObjs.o_2216_wheelFrontControllerTemperature, NULL},
+    {0x2217, 0x01, ODT_VAR, &ODObjs.o_2217_wheelFrontLeftCurrent, NULL},
+    {0x2218, 0x01, ODT_VAR, &ODObjs.o_2218_wheelFrontRightCurrent, NULL},
+    {0x2219, 0x01, ODT_VAR, &ODObjs.o_2219_wheelFrontLeftTemperature, NULL},
+    {0x221A, 0x01, ODT_VAR, &ODObjs.o_221A_wheelFrontRightTemperature, NULL},
+    {0x221B, 0x01, ODT_VAR, &ODObjs.o_221B_wheelRearControllerTemperature, NULL},
+    {0x221C, 0x01, ODT_VAR, &ODObjs.o_221C_wheelRearLeftCurrent, NULL},
+    {0x221D, 0x01, ODT_VAR, &ODObjs.o_221D_wheelRearRightCurrent, NULL},
+    {0x221E, 0x01, ODT_VAR, &ODObjs.o_221E_wheelRearLeftTemperature, NULL},
+    {0x221F, 0x01, ODT_VAR, &ODObjs.o_221F_wheelRearRightTemperature, NULL},
     {0x2300, 0x01, ODT_VAR, &ODObjs.o_2300_deckLeftControlWord, NULL},
     {0x2301, 0x01, ODT_VAR, &ODObjs.o_2301_deckLeftTargetVelocity, NULL},
     {0x2302, 0x01, ODT_VAR, &ODObjs.o_2302_deckRightControlWord, NULL},
