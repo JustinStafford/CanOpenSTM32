@@ -86,6 +86,11 @@ target_sources(${CMAKE_PROJECT_NAME}
     OD.c
 )
 
+# Suppress warnings in third-party STM32 driver code we don't own
+set_source_files_properties(CO_driver_STM32.c PROPERTIES
+    COMPILE_OPTIONS "-Wno-unused-variable"
+)
+
 target_link_libraries(${CMAKE_PROJECT_NAME}
     canopennode
 )

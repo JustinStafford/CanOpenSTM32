@@ -57,6 +57,8 @@ extern "C" {
 
 /* Stack configuration override default values.
  * For more information see file CO_config.h. */
+/* NOTE: CO_CONFIG_HB_CONS (and other CO_CONFIG_* overrides) are defined
+ * via compile flags in CMakeLists.txt — do not duplicate them here. */
 
 /* Basic definitions. If big endian, CO_SWAP_xx macros must swap bytes. */
 #define CO_LITTLE_ENDIAN
