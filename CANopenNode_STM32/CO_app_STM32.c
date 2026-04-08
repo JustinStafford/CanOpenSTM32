@@ -39,10 +39,32 @@ CANopenNodeSTM32*
 /* Printf function of CanOpen app */
 #define log_printf(macropar_message, ...) printf(macropar_message, ##__VA_ARGS__)
 
-/* default values for CO_CANopenInit() */
-#define NMT_CONTROL                                                                                                    \
-    CO_NMT_STARTUP_TO_OPERATIONAL                                                                                      \
-    | CO_NMT_ERR_ON_ERR_REG | CO_ERR_REG_GENERIC_ERR | CO_ERR_REG_COMMUNICATION
+/* default values for CO_CANopenInit()
+ *
+ * NOTE on NMT_CONTROL flags:
+ *   CO_NMT_STARTUP_TO_OPERATIONAL  — at boot, transition the master's
+ *     own NMT state from INITIALIZING straight to OPERATIONAL so its
+ *     TPDOs (which are configured as event-driven, type 0xFE) will be
+ *     transmitted.
+ *
+ *   CO_NMT_ERR_ON_ERR_REG | CO_ERR_REG_*  — INTENTIONALLY OMITTED.
+ *     These flags tell CANopenNode to auto-demote the master from
+ *     OPERATIONAL → PRE-OPERATIONAL whenever a listed bit appears in
+ *     the error register (0x1001).  The HIL heartbeat-loss tests
+ *     deliberately disable ZLAC / eRob / deck heartbeats, which causes
+ *     the master's HB consumer (0x1016) to set
+ *     CO_ERR_REG_COMMUNICATION, which under this flag combination
+ *     would silently demote the master to PREOP.  Once in PREOP, the
+ *     master stops sending all TPDOs (every drive controlword is
+ *     dropped), the drives sit in Ready-To-Switch-On forever, and a
+ *     firmware reset is the only way out.  We have our own
+ *     application-level fault handling in system_state_task.c
+ *     (component fault bitmap → SYSTEM_FAULT_COMPONENT → FAULT_ACTIVE)
+ *     and we do NOT want a second hidden state machine fighting ours.
+ *     Leave NMT_CONTROL at just CO_NMT_STARTUP_TO_OPERATIONAL so the
+ *     master stays OPERATIONAL for its entire lifetime.
+ */
+#define NMT_CONTROL CO_NMT_STARTUP_TO_OPERATIONAL
 #define FIRST_HB_TIME        500
 #define SDO_SRV_TIMEOUT_TIME 1000
 #define SDO_CLI_TIMEOUT_TIME 500
