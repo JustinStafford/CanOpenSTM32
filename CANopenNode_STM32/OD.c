@@ -33,9 +33,18 @@ OD_ATTR_PERSIST_COMM OD_PERSIST_COMM_t OD_PERSIST_COMM = {
     .x1017_producerHeartbeatTime = 0x00C8, /* 200ms heartbeat producer */
     .x1018_identity = {
         .highestSub_indexSupported = 0x04,
-        .vendor_ID = 0x00000000,
-        .productCode = 0x00000000,
-        .revisionNumber = 0x00000000,
+        /* VerdX-assigned identity for JF2.  Vendor ID is ASCII
+         * "VERD" packed as a big-endian u32 (mirrors ZeroErr's
+         * "Zero" = 0x5A65726F pattern); product code is ASCII
+         * "\0\0JF".  The unified admin-API device scanner
+         * classifies any responder with this vendor as the JF2
+         * master, so this must stay in sync with
+         * mower_admin_api.devices.classifier.JF2_MASTER_VENDOR_ID.
+         * Mirrored in DS301_profile.eds [1018sub*] DefaultValues
+         * so a CANopenEditor regen produces the same bytes. */
+        .vendor_ID = 0x56455244,
+        .productCode = 0x00004A46,
+        .revisionNumber = 0x00010001,
         .serialNumber = 0x00000000
     },
     .x1019_synchronousCounterOverflowValue = 0x00,
