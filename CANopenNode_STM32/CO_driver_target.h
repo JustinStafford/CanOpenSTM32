@@ -138,30 +138,49 @@ typedef struct {
     void* addrNV;
 } CO_storage_entry_t;
 
-/* (un)lock critical section in CO_CANsend() */
-// Why disabling the whole Interrupt
-#define CO_LOCK_CAN_SEND(CAN_MODULE)                                                                                   \
+/*
+ * Critical-section locks: BASEPRI, NOT PRIMASK.
+ *
+ * These were originally __disable_irq()/__set_PRIMASK() (mask EVERYTHING). That
+ * defeated the watchdog stall supervisor: TIM7 runs at NVIC priority 0 to catch
+ * a scheduler-wide hang and record a pmTypeStall before the IWDG fires, but a
+ * full PRIMASK disable masks even priority 0 — so any hang while one of these
+ * locks was held produced a BLIND IWDG with no forensics (confirmed from bag
+ * data 2026-06-16: genuine IWDG, zero post-mortem ever emitted).
+ *
+ * Raising BASEPRI to the FreeRTOS syscall ceiling instead masks every interrupt
+ * at priority >= 5 (CAN RX/TX/SCE, UART, TIM3 — all the contexts that actually
+ * touch the CAN module / OD, all at priority 5), so the mutual exclusion these
+ * locks provide is fully preserved. Only priorities 0..4 still fire — i.e. the
+ * TIM7 supervisor, which touches neither the CAN module nor the OD and so cannot
+ * corrupt anything. The stored value is the previous BASEPRI (field names kept
+ * for ABI/diff stability; they now hold BASEPRI, not PRIMASK). This is the same
+ * mechanism FreeRTOS itself uses for taskENTER_CRITICAL on Cortex-M.
+ *
+ * CO_DRIVER_BASEPRI_MASK must equal FreeRTOSConfig.h's
+ * configMAX_SYSCALL_INTERRUPT_PRIORITY: configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY (5)
+ * shifted into the upper configPRIO_BITS (4) bits of an 8-bit priority field.
+ */
+#define CO_DRIVER_BASEPRI_MASK ((uint32_t)(5U << (8U - 4U)))
+
+#define CO_DRIVER_RAISE_BASEPRI(SAVE_FIELD)                                                                            \
     do {                                                                                                               \
-        (CAN_MODULE)->primask_send = __get_PRIMASK();                                                                  \
-        __disable_irq();                                                                                               \
+        (SAVE_FIELD) = __get_BASEPRI();                                                                                \
+        __set_BASEPRI(CO_DRIVER_BASEPRI_MASK);                                                                         \
+        __DMB();                                                                                                       \
     } while (0)
-#define CO_UNLOCK_CAN_SEND(CAN_MODULE) __set_PRIMASK((CAN_MODULE)->primask_send)
+
+/* (un)lock critical section in CO_CANsend() */
+#define CO_LOCK_CAN_SEND(CAN_MODULE) CO_DRIVER_RAISE_BASEPRI((CAN_MODULE)->primask_send)
+#define CO_UNLOCK_CAN_SEND(CAN_MODULE) __set_BASEPRI((CAN_MODULE)->primask_send)
 
 /* (un)lock critical section in CO_errorReport() or CO_errorReset() */
-#define CO_LOCK_EMCY(CAN_MODULE)                                                                                       \
-    do {                                                                                                               \
-        (CAN_MODULE)->primask_emcy = __get_PRIMASK();                                                                  \
-        __disable_irq();                                                                                               \
-    } while (0)
-#define CO_UNLOCK_EMCY(CAN_MODULE) __set_PRIMASK((CAN_MODULE)->primask_emcy)
+#define CO_LOCK_EMCY(CAN_MODULE) CO_DRIVER_RAISE_BASEPRI((CAN_MODULE)->primask_emcy)
+#define CO_UNLOCK_EMCY(CAN_MODULE) __set_BASEPRI((CAN_MODULE)->primask_emcy)
 
 /* (un)lock critical section when accessing Object Dictionary */
-#define CO_LOCK_OD(CAN_MODULE)                                                                                         \
-    do {                                                                                                               \
-        (CAN_MODULE)->primask_od = __get_PRIMASK();                                                                    \
-        __disable_irq();                                                                                               \
-    } while (0)
-#define CO_UNLOCK_OD(CAN_MODULE) __set_PRIMASK((CAN_MODULE)->primask_od)
+#define CO_LOCK_OD(CAN_MODULE) CO_DRIVER_RAISE_BASEPRI((CAN_MODULE)->primask_od)
+#define CO_UNLOCK_OD(CAN_MODULE) __set_BASEPRI((CAN_MODULE)->primask_od)
 
 /* Synchronization between CAN receive and message processing threads. */
 #define CO_MemoryBarrier()
